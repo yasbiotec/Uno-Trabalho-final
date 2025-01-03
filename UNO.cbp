@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="UNO" />
+		<Option title="TRABALHO_FINAL_UNO" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/UNO" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/TRABALHO_FINAL_UNO" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -19,6 +19,18 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Extensions />
+		<Unit filename="../uno2/TADs.h" />
+		<Unit filename="cartas.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="cartas.h" />
+		<Unit filename="cartas.png" />
+		<Unit filename="mesa-UNO.png" />
+		<Unit filename="programa.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
