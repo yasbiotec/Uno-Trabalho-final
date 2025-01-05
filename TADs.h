@@ -4,7 +4,6 @@
 #define TAM_NOME 40
 #define TAM_EMAIL 25
 
-// Definindo as cores de cartas como um enum
 typedef enum {
     AMARELO = 0,
     VERDE,
@@ -18,46 +17,42 @@ typedef struct {
     CorCarta cor;
 } Info;
 
-typedef struct nodoLEnc2 {
+typedef struct Carta {
     Info info;
-    struct nodoLEnc2* prox;
-    struct nodoLEnc2* ant;
+    struct Carta* prox;
+    struct Carta* ant;
 } Carta;
 
-typedef struct Mao {
+typedef struct {
     int n_cartas;
-    struct nodoLEnc2* prim;
+    Carta* prim;
 } Mao;
 
-////////////////////////////////////////////////////////
-
-typedef struct nodoLEnc {
+typedef struct Jogador {
     int pontos;
-    char nome[20];
-    struct Mao* mao;
-    struct nodoLEnc* prox;
-    struct nodoLEnc* ant;
+    char nome[TAM_NOME];
+    Mao* mao;
+    struct Jogador* prox;
+    struct Jogador* ant;
 } Jogador;
 
 typedef struct {
     Jogador* prim;
 } ListaJogadores;
 
-//////////////////////////////////////////////////////////
-
-typedef struct pilhaEnc {
-    struct nodoPEnc* topo;
-} PilhaCartas;
-
-typedef struct nodoPEnc {
+typedef struct CartaPilha {
     Info info;
-    struct nodoPEnc* prox;
+    struct CartaPilha* prox;
 } CartaPilha;
 
-// Funções para manipulação de cartas e jogadores
+typedef struct {
+    CartaPilha* topo;
+} PilhaCartas;
+
 Mao* criaMao();
 int insereInicioMao(Mao* mao, Info info);
 Info removeCartaMao(Mao* mao, Carta* carta);
+
 PilhaCartas* criaPilhaCartas();
 void empilhaPilhaCartas(PilhaCartas* pilha, Info info);
 Info desempilhaPilhaCartas(PilhaCartas* pilha);

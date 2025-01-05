@@ -19,16 +19,26 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="../uno2/TADs.h" />
+		<Unit filename="TADs.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="TADs.h" />
+		<Unit filename="carta_atras.png" />
 		<Unit filename="cartas.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="cartas.h" />
 		<Unit filename="cartas.png" />
+		<Unit filename="cartas_especial.png" />
+		<Unit filename="jogo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="jogo.h" />
 		<Unit filename="mesa-UNO.png" />
 		<Unit filename="programa.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="unnamed.png" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

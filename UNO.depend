@@ -2,3 +2,36 @@
 1734126046 source:c:\users\yasmi\downloads\uno\programa.c
 	"raylib.h"
 
+1736099493 source:c:\users\yasmi\downloads\uno-trabalho-final-main\cartas.c
+	"cartas.h"
+	<stdlib.h>
+	<time.h>
+
+1736099773 c:\users\yasmi\downloads\uno-trabalho-final-main\cartas.h
+	"raylib.h"
+	"TADs.h"
+
+1736098519 c:\users\yasmi\downloads\uno-trabalho-final-main\tads.h
+
+1736099872 source:c:\users\yasmi\downloads\uno-trabalho-final-main\programa.c
+	"raylib.h"
+	"cartas.h"
+	<stdlib.h>
+	<time.h>
+
+1736098779 source:c:\users\yasmi\downloads\uno-trabalho-final-main\jogo.c
+	"jogo.h"
+	<stdlib.h>
+	<time.h>
+
+1736098779 source:c:\users\yasmi\downloads\uno-trabalho-final-main\tads.c
+	"TADs.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1736098787 c:\users\yasmi\downloads\uno-trabalho-final-main\jogo.h
+	"raylib.h"
+	"cartas.h"
+	"TADs.h"
+
