@@ -9,7 +9,8 @@ int main(void) {
     InitWindow(TELA, TELA, "Jogo de Cartas");
     Texture2D mesaTextura = LoadTexture("mesa-UNO.png");
     Texture2D cartasTextura = LoadTexture("cartas.png");
-    Texture2D cartaImagem = LoadTexture("carta_atras.png");  // Imagem de uma carta repetida para a máquina
+    Texture2D cartaImagem = LoadTexture("carta_maquina.png");  // Imagem de uma carta repetida para a máquina
+    Texture2D baralhoimagem = LoadTexture("baralho.png");  // Imagem do botão para adicionar uma carta
     srand(time(NULL));
 
     CartaPilha baralho[TAM_BARALHO];
@@ -19,6 +20,9 @@ int main(void) {
     PilhaCartas* descarte = criaPilhaCartas();
     int topoBaralho = TAM_BARALHO;
     empilhaPilhaCartas(descarte, baralho[--topoBaralho].info);
+
+    Vector2 posicaobaralho = {100, 200};  // Posição onde o botão vai ser desenhado
+
 
     Jogador jogador = {.mao = criaMao()};
     Jogador maquina = {.mao = criaMao()};
@@ -48,6 +52,16 @@ int main(void) {
                 }
                 cartaAtual = cartaAtual->prox;
             }
+
+            // Verificar se o clique foi dentro da área do baralho
+            if (mousePos.x >= posicaobaralho.x && mousePos.x <= posicaobaralho.x + baralhoimagem.width &&
+                mousePos.y >= posicaobaralho.y && mousePos.y <= posicaobaralho.y + baralhoimagem.height) {
+                // Adicionar uma carta aleatória à mão do jogador
+                Info cartaAleatoria = gerarCartaNormal();
+                insereInicioMao(jogador.mao, cartaAleatoria);
+            }
+
+
         }
 
         // Jogada da máquina
@@ -59,9 +73,10 @@ int main(void) {
         BeginDrawing();
         ClearBackground(RAYWHITE);
         DrawTexture(mesaTextura, 0, 0, WHITE);
+        DrawTexture(baralhoimagem, posicaobaralho.x, posicaobaralho.y, WHITE);
 
         // Desenhar pilha de descarte
-        Vector2 posicaoDescarte = {350, 200};
+        Vector2 posicaoDescarte = {360, 220};
         desenharCarta(cartasTextura, &(descarte->topo->info), posicaoDescarte);
 
         // Desenhar cartas do jogador
