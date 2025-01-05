@@ -10,7 +10,7 @@ int main(void) {
     Texture2D mesaTextura = LoadTexture("mesa-UNO.png");
     Texture2D cartasTextura = LoadTexture("cartas.png");
     Texture2D cartaImagem = LoadTexture("carta_maquina.png");  // Imagem de uma carta repetida para a máquina
-    Texture2D baralhoimagem = LoadTexture("baralho.png");  // Imagem do botão para adicionar uma carta
+    Texture2D baralhoimagem = LoadTexture("baralho.png");  // Imagem do baralho para adicionar uma carta
     srand(time(NULL));
 
     CartaPilha baralho[TAM_BARALHO];
@@ -21,7 +21,7 @@ int main(void) {
     int topoBaralho = TAM_BARALHO;
     empilhaPilhaCartas(descarte, baralho[--topoBaralho].info);
 
-    Vector2 posicaobaralho = {100, 200};  // Posição onde o botão vai ser desenhado
+    Vector2 posicaobaralho = {100, 200};  // Posição onde o baralho vai ser desenhado
 
 
     Jogador jogador = {.mao = criaMao()};
@@ -81,9 +81,21 @@ int main(void) {
 
         // Desenhar cartas do jogador
         Carta* cartaAtual = jogador.mao->prim;
+        int xPos = 6;  // Posição inicial horizontal
+        int yPos = 560; // Posição inicial vertical
         for (int i = 0; cartaAtual != NULL; i++) {
-            Vector2 posicao = {6 + i * (LARGURA_CARTA + 30), 560};
+            Vector2 posicao = {xPos, yPos};
             desenharCarta(cartasTextura, cartaAtual, posicao);
+
+            // Atualiza a posição para a próxima carta
+            xPos += LARGURA_CARTA + 30;
+
+            // Se a carta ultrapassar a largura da tela, vai para a linha de baixo
+            if (xPos + LARGURA_CARTA > TELA) {
+                xPos = 6;  // Recomeça a linha
+                yPos += ALTURA_CARTA + 10;  // Move para baixo
+            }
+
             cartaAtual = cartaAtual->prox;
         }
 
