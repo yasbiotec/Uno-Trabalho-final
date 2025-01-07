@@ -2,7 +2,6 @@
 #define DESENHO_H
 
 #include "raylib.h"
-#include "TADs.h"
 #include "atualiza_rodada.h"
 #define LARGURA_CARTA 82
 #define ALTURA_CARTA 130

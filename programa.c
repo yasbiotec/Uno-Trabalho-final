@@ -5,7 +5,7 @@
 typedef enum { MENU, GAME, PAUSE, EXIT } gameScreen;
 
 void initGame();// funcao que inicia todas as variaveis/estruturas utilizadas no funcionamento interno
-//jogador_atual = ls_jogadores->prim; //ponteiro que aponta para o primeiro jogador da lista
+Jogador jogador_atual = ListaJogadores->prim; //ponteiro que aponta para o primeiro jogador da lista
 void desenhaMenu(Texture2D background, Texture2D b1, Texture2D b2, Texture2D b3, Texture2D b4, Rectangle Novo_jogo, Rectangle Continuar, Rectangle Ranking, Rectangle Sair);
 void desenhaPause();
 void desenhaExit();
@@ -64,6 +64,8 @@ int main() {
                 BeginDrawing();
                 ClearBackground(RAYWHITE);
                 DrawText("Jogo em andamento...", 100, 100, 30, BLACK);
+                atualizaRodada(pilhaMesa, baralho, jogador_atual);
+                desenhaRodada(pilhaMesa, ls_jogadores);
                 EndDrawing();
                 break;
 

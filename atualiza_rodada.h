@@ -2,6 +2,9 @@
 #define _UP_RODADA_
 
 #include "TADs.h"
+#include "stdio.h"
+#include "raylib.h"
+#include "desenho.h"
 
 
 void compraCarta(PilhaCartas* baralho, Mao* mao, int n);

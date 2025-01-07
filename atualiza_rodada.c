@@ -1,7 +1,4 @@
-#include "TADs.h"
-#include "stdio.h"
-#include "raylib.h"
-#include "desenho.h"
+#include "atualiza_rodada.h"
 
 void compraCarta(PilhaCartas* baralho, Mao* mao, int n);
 void inputsJogador(Mao* mao, PilhaCartas* pilha, PilhaCartas* baralho, int* cartaJogada, int* pulaVez);
@@ -111,6 +108,8 @@ void inputsJogador(Mao* mao, PilhaCartas* pilha, PilhaCartas* baralho, int* cart
     Vector2 mousePos = GetMousePosition();
     Vector2 posicaobaralho = {100, 200};
     Texture2D baralhoimagem = LoadTexture("baralho.png");
+    Rectangle posicaoBotaoPular = {100,100,200, 50};  // Botão "Pular"
+
     int cartaComprada = 0;
     Info cartaInfoClicada;
 
@@ -126,14 +125,15 @@ void inputsJogador(Mao* mao, PilhaCartas* pilha, PilhaCartas* baralho, int* cart
             cartaComprada = 1;
         }
 
-        if (cartaComprada == 1 &&
-            mousePos.x >= posicaoBotaoPular.x && mousePos.x <= posicaoBotaoPular.x + botaoPularImagem.width &&
-            mousePos.y >= posicaoBotaoPular.y && mousePos.y <= posicaoBotaoPular.y + botaoPularImagem.height) {
-            // funcao com botao para pular a vez
-            *pulaVez = 1;
-            //******** chamar funcao que desenha o botao de pular **************
-            return;
-        }
+            // Verificar se o clique foi dentro do botão "Pular"
+            if (cartaComprada == 1 &&
+                mousePos.x >= posicaoBotaoPular.x && mousePos.x <= posicaoBotaoPular.x + 200 &&
+                mousePos.y >= posicaoBotaoPular.y && mousePos.y <= posicaoBotaoPular.y + 50) {
+                // Função de pular a vez
+                pulaVez = 1;
+                printf("Vez pulada!\n");
+                return; // Finaliza a função ou volta para a próxima ação
+            }
 
         else{
             Carta* cartaAtual = mao->prim;
@@ -212,32 +212,45 @@ void alteraCor(CartaPilha* carta, Jogador* jogador){
 }
 
 void desenharMenuEscolhaCor(CartaPilha* carta, Jogador* jogador) {
-    // Supondo cores disponíveis
-    Color cores[4] = {RED, BLUE, GREEN, YELLOW};
-    int corEscolhida = -1;
+        Color cores[4] = {RED, BLUE, GREEN, YELLOW};
+        // Carrega as texturas
+    Texture2D button1 = LoadTexture("botao1.png");
+    Texture2D button2 = LoadTexture("botao2.png");
+    Texture2D button3 = LoadTexture("botao3.png");
+    Texture2D button4 = LoadTexture("botao4.png");
 
-    while (corEscolhida == -1) {
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
+    // Define as posições dos botões
+    Rectangle button1Rect = {20, 200, button1.width, button1.height};
+    Rectangle button2Rect = {370, 200, button2.width, button2.height};
+    Rectangle button3Rect = {20, 300, button3.width, button3.height};
+    Rectangle button4Rect = {370, 300, button4.width, button4.height};
 
-        // Exibir botões para escolha
-        for (int i = 0; i < 4; i++) {
-            Vector2 posicao = {100 + i * 150, 300};
-            if (CheckCollisionPointRec(GetMousePosition(), (Rectangle){posicao.x, posicao.y, 100, 50})) {
-                if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                    corEscolhida = i;
-                }
-                DrawRectangle(posicao.x, posicao.y, 100, 50, LIGHTGRAY);
-            } else {
-                DrawRectangle(posicao.x, posicao.y, 100, 50, DARKGRAY);
+        // Detecta cliques do mouse
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+            Vector2 mousePos = GetMousePosition();
+            // Verifica qual botão foi clicado
+            if (CheckCollisionPointRec(mousePos, button1Rect)) {
+                 carta->info.cor =  VERDE;
+            } else if (CheckCollisionPointRec(mousePos, button2Rect)) {
+                carta->info.cor = AMARELO;
+            } else if (CheckCollisionPointRec(mousePos, button3Rect)) {
+                carta->info.cor = AZUL;
+            } else if (CheckCollisionPointRec(mousePos, button4Rect)) {
+                 carta->info.cor = VERMELHO;
             }
-            DrawText(cores[i] == RED ? "Vermelho" : cores[i] == BLUE ? "Azul" : cores[i] == GREEN ? "Verde" : "Amarelo",
-                     posicao.x + 10, posicao.y + 15, 20, BLACK);
         }
+                // Desenha os botões
+        DrawTexture(button1, button1Rect.x, button1Rect.y, WHITE);
+        DrawTexture(button2, button2Rect.x, button2Rect.y, WHITE);
+        DrawTexture(button3, button3Rect.x, button3Rect.y, WHITE);
+        DrawTexture(button4, button4Rect.x, button4Rect.y, WHITE);
 
+        DrawText("ESCOLHA A COR", 200, 70, 50, BLACK);
         EndDrawing();
-    }
-
-    carta->info.cor = cores[corEscolhida]; // Define a nova cor
+    // Libera os recursos
+    UnloadTexture(button1);
+    UnloadTexture(button2);
+    UnloadTexture(button3);
 }
+
 
