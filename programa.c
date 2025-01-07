@@ -1,124 +1,125 @@
 #include "raylib.h"
-#include "cartas.h"
-#include <stdlib.h>
-#include <time.h>
+#include "atualiza_rodada.h"
+#define TELA 750
 
-#define TAM_BARALHO 45
+typedef enum { MENU, GAME, PAUSE, EXIT } gameScreen;
 
-int main(void) {
-    InitWindow(TELA, TELA, "Jogo de Cartas");
-    Texture2D mesaTextura = LoadTexture("mesa-UNO.png");
-    Texture2D cartasTextura = LoadTexture("cartas.png");
-    Texture2D cartaImagem = LoadTexture("carta_maquina.png");  // Imagem de uma carta repetida para a máquina
-    Texture2D baralhoimagem = LoadTexture("baralho.png");  // Imagem do baralho para adicionar uma carta
-    srand(time(NULL));
+void initGame();// funcao que inicia todas as variaveis/estruturas utilizadas no funcionamento interno
+//jogador_atual = ls_jogadores->prim; //ponteiro que aponta para o primeiro jogador da lista
+void desenhaMenu(Texture2D background, Texture2D b1, Texture2D b2, Texture2D b3, Texture2D b4, Rectangle Novo_jogo, Rectangle Continuar, Rectangle Ranking, Rectangle Sair);
+void desenhaPause();
+void desenhaExit();
 
-    CartaPilha baralho[TAM_BARALHO];
-    gerarBaralho(baralho, TAM_BARALHO);
-    embaralharBaralho(baralho, TAM_BARALHO);
-
-    PilhaCartas* descarte = criaPilhaCartas();
-    int topoBaralho = TAM_BARALHO;
-    empilhaPilhaCartas(descarte, baralho[--topoBaralho].info);
-
-    Vector2 posicaobaralho = {100, 200};  // Posição onde o baralho vai ser desenhado
-
-
-    Jogador jogador = {.mao = criaMao()};
-    Jogador maquina = {.mao = criaMao()};
-
-    distribuirCartas(baralho, topoBaralho, &jogador);
-    distribuirCartas(baralho, topoBaralho, &maquina);
-
+int main() {
+    InitWindow(TELA, TELA, "----------------------------------------------------UNO!--------------------------------");
     SetTargetFPS(60);
-    bool cartaClicada = false;
-    Info cartaInfoClicada = {0, PRETA};
+
+    // Inicializa variáveis
+    gameScreen currentScreen = MENU;
+    int pause = 0;
+
+    // Inicializa texturas e botões
+    Texture2D background = LoadTexture("fundo_principal.png");
+    Texture2D b1 = LoadTexture("botao1.png");
+    Texture2D b2 = LoadTexture("botao2.png");
+    Texture2D b3 = LoadTexture("botao3.png");
+    Texture2D b4 = LoadTexture("botao4.png");
+
+    Rectangle Novo_jogo = {200, 310, b1.width, b1.height};
+    Rectangle Continuar = {200, 410, b2.width, b2.height};
+    Rectangle Ranking = {200, 510, b3.width, b3.height};
+    Rectangle Sair = {200, 610, b4.width, b4.height};
+
+    initGame();
 
     while (!WindowShouldClose()) {
         Vector2 mousePos = GetMousePosition();
 
-        // Jogada do jogador
-        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-            Carta* cartaAtual = jogador.mao->prim;
-            for (int i = 0; cartaAtual != NULL; i++) {
-                Vector2 posicao = {6 + i * (LARGURA_CARTA + 30), 560};
-                if (verificarCliqueCarta(mousePos, posicao)) {
-                    if (cartaValida(cartaAtual->info, descarte->topo->info)) {
-                        cartaInfoClicada = removeCartaMao(jogador.mao, cartaAtual);
-                        empilhaPilhaCartas(descarte, cartaInfoClicada);
-                        cartaClicada = true;
+        switch (currentScreen) {
+            case MENU:
+                if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                    if (CheckCollisionPointRec(mousePos, Novo_jogo)) {
+                        printf("Novo Jogo iniciado!\n");
+                        currentScreen = GAME;
+                    } else if (CheckCollisionPointRec(mousePos, Continuar)) {
+                        printf("Continuar jogo!\n");
+                        currentScreen = GAME;
+                    } else if (CheckCollisionPointRec(mousePos, Ranking)) {
+                        printf("Visualizar Ranking!\n");
+                    } else if (CheckCollisionPointRec(mousePos, Sair)) {
+                        currentScreen = EXIT;
                     }
-                    break;
                 }
-                cartaAtual = cartaAtual->prox;
-            }
 
-            // Verificar se o clique foi dentro da área do baralho
-            if (mousePos.x >= posicaobaralho.x && mousePos.x <= posicaobaralho.x + baralhoimagem.width &&
-                mousePos.y >= posicaobaralho.y && mousePos.y <= posicaobaralho.y + baralhoimagem.height) {
-                // Adicionar uma carta aleatória à mão do jogador
-                Info cartaAleatoria = gerarCartaNormal();
-                insereInicioMao(jogador.mao, cartaAleatoria);
-            }
+                BeginDrawing();
+                desenhaMenu(background, b1, b2, b3, b4, Novo_jogo, Continuar, Ranking, Sair);
+                EndDrawing();
+                break;
 
+            case GAME:
+                if (IsKeyPressed(KEY_P)) {
+                    pause = 1;
+                    currentScreen = PAUSE;
+                }
+                BeginDrawing();
+                ClearBackground(RAYWHITE);
+                DrawText("Jogo em andamento...", 100, 100, 30, BLACK);
+                EndDrawing();
+                break;
 
+            case PAUSE:
+                if (IsKeyPressed(KEY_P)) {
+                    pause = 0;
+                    currentScreen = GAME;
+                }
+                BeginDrawing();
+                desenhaPause();
+                EndDrawing();
+                break;
+
+            case EXIT:
+                CloseWindow();
+                return 0;
         }
-
-        // Jogada da máquina
-        if (cartaClicada) {
-            jogadaMaquina(&maquina, descarte, baralho, &topoBaralho);
-            cartaClicada = false;
-        }
-
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
-        DrawTexture(mesaTextura, 0, 0, WHITE);
-        DrawTexture(baralhoimagem, posicaobaralho.x, posicaobaralho.y, WHITE);
-
-        // Desenhar pilha de descarte
-        Vector2 posicaoDescarte = {360, 220};
-        desenharCarta(cartasTextura, &(descarte->topo->info), posicaoDescarte);
-
-        // Desenhar cartas do jogador
-        Carta* cartaAtual = jogador.mao->prim;
-        int xPos = 6;  // Posição inicial horizontal
-        int yPos = 560; // Posição inicial vertical
-        for (int i = 0; cartaAtual != NULL; i++) {
-            Vector2 posicao = {xPos, yPos};
-            desenharCarta(cartasTextura, cartaAtual, posicao);
-
-            // Atualiza a posição para a próxima carta
-            xPos += LARGURA_CARTA + 30;
-
-            // Se a carta ultrapassar a largura da tela, vai para a linha de baixo
-            if (xPos + LARGURA_CARTA > TELA) {
-                xPos = 6;  // Recomeça a linha
-                yPos += ALTURA_CARTA + 10;  // Move para baixo
-            }
-
-            cartaAtual = cartaAtual->prox;
-        }
-
-        // Desenhar quantidade de cartas da máquina
-        int quantidadeCartasMaquina = 0;
-        Carta* cartaMaquina = maquina.mao->prim;
-        while (cartaMaquina != NULL) {
-            quantidadeCartasMaquina++;
-            cartaMaquina = cartaMaquina->prox;
-        }
-
-        // Desenhar as cartas da máquina como ícones repetidos
-        for (int i = 0; i < quantidadeCartasMaquina; i++) {
-            Vector2 posicaoMaquina = {100 + i * (LARGURA_CARTA + 1), 5};  // Ajuste de posição para as cartas da máquina com 1 pixel de espaçamento
-            DrawTexture(cartaImagem, posicaoMaquina.x, posicaoMaquina.y, WHITE);
-        }
-
-        EndDrawing();
     }
 
-    UnloadTexture(mesaTextura);
-    UnloadTexture(cartasTextura);
-    UnloadTexture(cartaImagem);
+    // Libera recursos
+    UnloadTexture(b1);
+    UnloadTexture(b2);
+    UnloadTexture(b3);
+    UnloadTexture(b4);
+    UnloadTexture(background);
     CloseWindow();
+
     return 0;
+}
+
+void initGame() {
+    // Inicializa variáveis ou estruturas do jogo
+    printf("Jogo inicializado!\n");
+}
+
+void desenhaMenu(Texture2D background, Texture2D b1, Texture2D b2, Texture2D b3, Texture2D b4, Rectangle Novo_jogo, Rectangle Continuar, Rectangle Ranking, Rectangle Sair) {
+    ClearBackground(RAYWHITE);
+    DrawTexture(background, 0, 0, WHITE);
+
+    DrawTexture(b1, Novo_jogo.x, Novo_jogo.y, WHITE);
+    DrawTexture(b2, Continuar.x, Continuar.y, WHITE);
+    DrawTexture(b3, Ranking.x, Ranking.y, WHITE);
+    DrawTexture(b4, Sair.x, Sair.y, WHITE);
+
+    DrawText("Novo Jogo", 250, 330, 50, BLACK);
+    DrawText("Continuar", 250, 430, 50, BLACK);
+    DrawText("Ranking", 270, 530, 50, BLACK);
+    DrawText("Sair", 292, 630, 50, BLACK);
+}
+
+void desenhaPause() {
+    ClearBackground(LIGHTGRAY);
+    DrawText("Pause - Aperte 'P' para voltar ao jogo", 100, 100, 30, BLACK);
+}
+
+void desenhaExit() {
+    ClearBackground(DARKGRAY);
+    DrawText("Saindo do jogo...", 100, 100, 30, WHITE);
 }
