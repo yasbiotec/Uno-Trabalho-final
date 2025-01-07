@@ -99,27 +99,3 @@ void initGame() {
     printf("Jogo inicializado!\n");
 }
 
-void desenhaMenu(Texture2D background, Texture2D b1, Texture2D b2, Texture2D b3, Texture2D b4, Rectangle Novo_jogo, Rectangle Continuar, Rectangle Ranking, Rectangle Sair) {
-    ClearBackground(RAYWHITE);
-    DrawTexture(background, 0, 0, WHITE);
-
-    DrawTexture(b1, Novo_jogo.x, Novo_jogo.y, WHITE);
-    DrawTexture(b2, Continuar.x, Continuar.y, WHITE);
-    DrawTexture(b3, Ranking.x, Ranking.y, WHITE);
-    DrawTexture(b4, Sair.x, Sair.y, WHITE);
-
-    DrawText("Novo Jogo", 250, 330, 50, BLACK);
-    DrawText("Continuar", 250, 430, 50, BLACK);
-    DrawText("Ranking", 270, 530, 50, BLACK);
-    DrawText("Sair", 292, 630, 50, BLACK);
-}
-
-void desenhaPause() {
-    ClearBackground(LIGHTGRAY);
-    DrawText("Pause - Aperte 'P' para voltar ao jogo", 100, 100, 30, BLACK);
-}
-
-void desenhaExit() {
-    ClearBackground(DARKGRAY);
-    DrawText("Saindo do jogo...", 100, 100, 30, WHITE);
-}
