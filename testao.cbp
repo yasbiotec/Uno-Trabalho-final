@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="testao" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/testao" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="../testando" />
+		<Unit filename="TADs.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="TADs.h" />
+		<Unit filename="atualiza_rodada.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="atualiza_rodada.h" />
+		<Unit filename="baralho.png" />
+		<Unit filename="botao1.png" />
+		<Unit filename="botao2.png" />
+		<Unit filename="botao3.png" />
+		<Unit filename="botao4.png" />
+		<Unit filename="carta_maquina.png" />
+		<Unit filename="cartas.png" />
+		<Unit filename="desenho.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="desenho.h" />
+		<Unit filename="fundo_principal.png" />
+		<Unit filename="menu.png" />
+		<Unit filename="mesa-UNO.png" />
+		<Unit filename="programa.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

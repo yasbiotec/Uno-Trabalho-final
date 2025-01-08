@@ -1,0 +1,29 @@
+# depslib dependency file v1.0
+1736275059 source:c:\users\yasmi\onedrive\imagens\testao\desenho.c
+	"desenho.h"
+
+1736272045 c:\users\yasmi\onedrive\imagens\testao\desenho.h
+	"raylib.h"
+	"atualiza_rodada.h"
+
+1736271401 source:c:\users\yasmi\onedrive\imagens\testao\programa.c
+	"raylib.h"
+	"atualiza_rodada.h"
+
+1736274693 source:c:\users\yasmi\onedrive\imagens\testao\tads.c
+	"TADs.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1736274703 c:\users\yasmi\onedrive\imagens\testao\tads.h
+
+1736272103 c:\users\yasmi\onedrive\imagens\testao\atualiza_rodada.h
+	"TADs.h"
+	"stdio.h"
+	"raylib.h"
+	"desenho.h"
+
+1736274642 source:c:\users\yasmi\onedrive\imagens\testao\atualiza_rodada.c
+	"atualiza_rodada.h"
+
